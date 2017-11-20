@@ -201,6 +201,12 @@ public class Simulator implements IEventObserver{
 				 * - Update counters for individual samples
 				 * - !!! Also check if the simulation can be terminated !!!
 				 */
+            	
+            	
+            	// Abbruchbedingung: The simulation stops if - relative error of the 90% confidence interval for the estimated mean is lower than 5% 
+            	// or if its absolute error is smaller than 0:0001 s.
+            	
+ //           	if(sims.)
             	sims.statisticObjects.get(sims.dtacBatchWaitingTime).count(simTimeToRealTime(currentCustomer.getTimeInQueue()));
             	sims.statisticObjects.get(sims.dtcBatchServiceTime).count(simTimeToRealTime(currentCustomer.getTimeInService()));
             	

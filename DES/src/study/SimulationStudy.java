@@ -9,6 +9,7 @@ import simulation.lib.Simulator;
 import simulation.lib.counter.ContinuousCounter;
 import simulation.lib.counter.Counter;
 import simulation.lib.counter.DiscreteAutocorrelationCounter;
+import simulation.lib.counter.DiscreteConfidenceCounter;
 import simulation.lib.counter.DiscreteConfidenceCounterWithRelativeError;
 import simulation.lib.counter.DiscreteCounter;
 import simulation.lib.histogram.ContinuousHistogram;
@@ -183,6 +184,9 @@ public class SimulationStudy {
 		 * TODO Problem 5.1.1 - Set simulation parameters
 		 * Hint: Take a look at the attributes of this class which have no usages yet (This may be indicated by your IDE)
 		 */
+		
+		
+	
 		// this.nInit = cNInit;
 		// this.cVar = ...
 		this.nInit = 10;
@@ -228,46 +232,36 @@ public class SimulationStudy {
 		 * TODO Problem 5.1.1 - Create a DiscreteConfidenceCounterWithRelativeError
 		 * In order to check later if the simulation can be terminated according to the condition
 		 */
-//		 DiscreteConfidenceCounterWithRelativeError disConfCounter = new DiscreteConfidenceCounterWithRelativeError("DiscreteConfidenceCounterWithRelativeError");
+		statisticObjects.put(ccreBatchWaitingTime, new DiscreteConfidenceCounterWithRelativeError("DiscreteConfidenceCounterWithRelativeError"));
 		 
-		 statisticObjects.put(ccreBatchWaitingTime, new DiscreteConfidenceCounterWithRelativeError("DiscreteConfidenceCounterWithRelativeError"));
-		 
-//			public String cthServerUtilization = "continuousTimeHistogramServerUtilization";
-//			
-//			public String tempdtcBatchWaitingTime = "temporaryDiscreteTimeCounterBatchWaitingTime";
-//			public String tempdtcBatchServiceTime = "temporaryDiscreteTimeCounterBatchServiceTime";
-//			
-//			public String ccreWaitingTime 	   = "confidenceCounterWithRelativeErrorWaitingTime";
-
-		
 		 /*
 		 * TODO Problem 5.1.4 - Create counter to calculate the mean waiting time with batch means method
 		 */
-		statisticObjects.put(dtcBatchWaitingTime,  new DiscreteConfidenceCounterWithRelativeError("discreteTimeCounterBatchWaitingTime"));
-		statisticObjects.put(dtcBatchServiceTime,  new DiscreteConfidenceCounterWithRelativeError("discreteTimeCounterBatchServiceTime"));
-		statisticObjects.put(dtacBatchWaitingTime, new DiscreteConfidenceCounterWithRelativeError("discreteTimeAutocorrelationCounterBatchWaitingTime"));
-
+		 
 		 
 		/*
 		 * TODO Problem 5.1.4 - Provide means to keep track of E[WT] > 5 * E[ST]
 		 * !!! This is also called "waiting probability" in the sheet !!!
 		 */
 		 
+		
 		 
 		/*
 		 * TODO Problem 5.1.4 - Create confidence counter for individual waiting time samples
 		 */
-		 
+		 statisticObjects.put(ccreWaitingTime,  new DiscreteConfidenceCounter("discreteTimeCounterBatchWaitingTime"));
+
 		 
 		/*
 		 * TODO Problem 5.1.4 - Create confidence counter for to count waiting times with batch means method
 		 */
+		 statisticObjects.put(ccreWaitingTime,  new DiscreteConfidenceCounter("discreteTimeCounterBatchWaitingTime"));
 		 
 		 
 		/*
 		 * TODO Problem 5.1.5 - Create a DiscreteAutocorrelationCounter for batch means
 		 */
-		 DiscreteAutocorrelationCounter disAutocorrCounter = new DiscreteAutocorrelationCounter("DiscreteAutocorrelationCounter", 10);
+		statisticObjects.put(dtacBatchWaitingTime, new DiscreteAutocorrelationCounter("DiscreteAutocorrelationCounter", 10));
 
 	}
 
@@ -293,7 +287,10 @@ public class SimulationStudy {
 			 * TODO Problem 5.1 - Output reporting information!
 			 * Print your statistic objects which are needed to answer the questions in the exercise sheet
 			 */
-
+			for (IStatisticObject so : statisticObjects.values()) {
+				System.out.println(so.report());
+			}
+			System.out.println("minimum queue size: "+minQS+ "\n" +"maximum queue size: "+maxQS);
 		}
 
 	}
