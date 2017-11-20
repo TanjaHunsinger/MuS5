@@ -63,12 +63,14 @@ public class SimulationState {
 	public boolean isTransientPhaseOver() {
 		 /*
 		 * TODO Problem 5.1.1 - Implement this method
+		 * 
+		 * 1. Versuch: TransientPhase ist abgeschlossen, wenn nInit runtergezaehlt ist
 		 */
-		// Abbruch, wenn nInit == 0
 		if(sims.nInit == 0) {
 			return true;
 		}
-		else return false;
+		else 
+			return false;
 	}
 
 	/**
