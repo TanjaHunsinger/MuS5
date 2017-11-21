@@ -202,9 +202,6 @@ public class SimulationStudy {
 		 * Hint: Take a look at the attributes of this class which have no usages yet (This may be indicated by your IDE)
 		 */
 		
-		
-		// this.nInit = cNInit;
-		// this.cVar = ...
 		this.nInit = cNinit;
 		this.cVar  = cCvar;
 		this.batchLength = lBatch;
@@ -219,7 +216,8 @@ public class SimulationStudy {
 		 */
 		double iat = (1.0/(p));
 	    randVarInterArrivalTime = new Exponential(new StdRNG(1), iat);
-		randVarServiceTime 	 = new Exponential(new StdRNG(100), 1.0);
+		randVarServiceTime 	    = new Exponential(new StdRNG(100), 1.0);
+		randVarInterArrivalTime.setCvar(cCvar);
 		
 	}
 
@@ -254,7 +252,9 @@ public class SimulationStudy {
 		 * TODO Problem 5.1.1 - Create a DiscreteConfidenceCounterWithRelativeError
 		 * In order to check later if the simulation can be terminated according to the condition
 		 */
-		statisticObjects.put(ccreBatchWaitingTime, new DiscreteConfidenceCounterWithRelativeError("terminate simulation"));
+		// 0.1 = alpha -> 90% Konfidenzintervall
+		statisticObjects.put(ccreBatchWaitingTime, new DiscreteConfidenceCounterWithRelativeError("terminate simulation", 0.1));
+//		statisticObjects.put(ccreBatchWaitingTime, new DiscreteConfidenceCounterWithRelativeError("terminate simulation"));
 		 
 		 /*
 		 * TODO Problem 5.1.4 - Create counter to calculate the mean waiting time with batch means method

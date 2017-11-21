@@ -206,10 +206,9 @@ public class Simulator implements IEventObserver{
 				 * - !!! Also check if the simulation can be terminated !!!
 				 */
 
-            	double error = ((DiscreteConfidenceCounterWithRelativeError)sims.statisticObjects.get(sims.ccreBatchWaitingTime)).maxAbsErr();
-				// Abbruchbedingung: The simulation stops if - relative error of the 90% confidence interval for the estimated mean is lower than 5% for if its absolute error is smaller than 0:0001 s.
-            	if(error < 0.01){
-            		stop();
+            	double errorAbs = ((DiscreteConfidenceCounterWithRelativeError)sims.statisticObjects.get(sims.ccreBatchWaitingTime)).maxAbsErr();
+            	double errorRel = ((DiscreteConfidenceCounterWithRelativeError)sims.statisticObjects.get(sims.ccreBatchWaitingTime)).maxRelErr();
+            	if((errorAbs < 0.0001) || (errorRel < 0.05)){
             		stopEventHandler(now);
             	}
 				/**
@@ -224,10 +223,7 @@ public class Simulator implements IEventObserver{
 					sims.statisticObjects.remove(sims.dtacBatchWaitingTime);
 					sims.statisticObjects.put(sims.dtacBatchWaitingTime, new DiscreteConfidenceCounter("individual waiting-time"));
 					
-//					System.out.println("!!!!!!!!!!!mean " + mean);
-//					System.out.println("!!!!!!!!!!mean ges "+ ((Counter)sims.statisticObjects.get(sims.ccreWaitingTime)).getMean());
-//					System.out.println("numSamples " + state.numSamples + " nInit " + sims.nInit + " batchLength "+ sims.batchLength);
-	            	System.out.println("Absolute Error: "+error);
+	            	System.out.println("Absolute Error: "+errorAbs+" Relative Error "+errorRel);
 	            	
 				}// Batch- Grenze erreicht?
 				
