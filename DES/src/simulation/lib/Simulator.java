@@ -19,6 +19,8 @@ public class Simulator implements IEventObserver{
 	private SortableQueue ec;
 	private boolean stop;
 	
+	private double arrMean[] = new double[1000];
+	
 	/**
 	 * Contains simulator statistics and parameters
 	 */
@@ -194,6 +196,7 @@ public class Simulator implements IEventObserver{
         // update statistics if transient phase is over
         if(this.state.isTransientPhaseOver()) {
             if (currentCustomer != null) {
+            	int counterArray = 0;
 
             	/*
 				 * TODO Problem 5.1 - Handle batches and update your counters here
@@ -202,29 +205,40 @@ public class Simulator implements IEventObserver{
 				 * - !!! Also check if the simulation can be terminated !!!
 				 */
             	
-            	
             	// Abbruchbedingung: The simulation stops if - relative error of the 90% confidence interval for the estimated mean is lower than 5% 
             	// or if its absolute error is smaller than 0:0001 s.
-            	
-            	if(true) {
-
-
-            		sims.statisticObjects.get(sims.dtacBatchWaitingTime).count(simTimeToRealTime(currentCustomer.getTimeInQueue()));
-            		sims.statisticObjects.get(sims.dtcBatchServiceTime).count(simTimeToRealTime(currentCustomer.getTimeInService()));
-
-
-            		// update customer service end time
-            		currentCustomer.serviceEndTime = getSimTime();
-
-
-            		sims.statisticObjects.get(sims.dtcWaitingTime).count(simTimeToRealTime(currentCustomer.getTimeInQueue()));
-            		sims.statisticObjects.get(sims.dthWaitingTime).count(simTimeToRealTime(currentCustomer.getTimeInQueue()));
-
-            		sims.statisticObjects.get(sims.dtcServiceTime).count(simTimeToRealTime(currentCustomer.getTimeInService()));
-            		sims.statisticObjects.get(sims.dthServiceTime).count(simTimeToRealTime(currentCustomer.getTimeInService()));
+ 
+            	/**
+            	 * Auswertung der bisher gezaehlten Werte fuer den vorangegangnen Batch
+            	 *             	 */
+            	if(((state.numSamples - sims.nInit) % (sims.batchLength)) == 0) {
+            		/**
+            		 * Mean waiting time berechnet und in Array hinterlegt
+            		 */ 
+            		double mean = ((Counter) sims.statisticObjects.get(sims.dtacBatchWaitingTime)).getMean();
+            		arrMean[counterArray] = mean;
+            		counterArray++;
+            		
+            		// Konfidenzintervalle berechnen
             	}
+            	
+             	// update customer service end time
+            	currentCustomer.serviceEndTime = getSimTime();
+
+            	sims.statisticObjects.get(sims.dtcWaitingTime).count(simTimeToRealTime(currentCustomer.getTimeInQueue()));
+            	sims.statisticObjects.get(sims.dthWaitingTime).count(simTimeToRealTime(currentCustomer.getTimeInQueue()));
+
+            	sims.statisticObjects.get(sims.dtcServiceTime).count(simTimeToRealTime(currentCustomer.getTimeInService()));
+            	sims.statisticObjects.get(sims.dthServiceTime).count(simTimeToRealTime(currentCustomer.getTimeInService()));
+
+            	/**
+            	 * Hinzugefuegt
+            	 */
+            	sims.statisticObjects.get(sims.dtacBatchWaitingTime).count(simTimeToRealTime(currentCustomer.getTimeInQueue()));	// DiscreteAutocorrelationCounter
+            	sims.statisticObjects.get(sims.dtcBatchServiceTime).count(simTimeToRealTime(currentCustomer.getTimeInService()));
 
             }
+
 
             // update server utilization
             if (state.serverBusy == true) {
