@@ -142,26 +142,38 @@ public class SimulationStudy {
 	 * Here you have to set some names (as Sting objects) for all your statistic objects
 	 * They are later used to retrieve them from the dictionary
 	 */
+
 	// Strings used for receiving statisticobjects later in the dictionary.
 	public String dtcWaitingTime = "discreteTimeCounterWaitingTime";
-	public String dthWaitingTime = "discreteTimeHistogramWaitingTime";
 	public String dtcServiceTime = "discreteTimeCounterServiceTime";
+	
+	public String dthWaitingTime = "discreteTimeHistogramWaitingTime";
 	public String dthServiceTime = "discreteTimeHistogramServiceTime";
 	
 	public String ctcQueueOccupancy    = "continuousTimeCounterQueueOccupancy";
-	public String cthQueueOccupancy    = "continuousTimeHistogramQueueOccupancy";
 	public String ctcServerUtilization = "continuousTimeCounterServerUtilization";
+	
+	public String cthQueueOccupancy    = "continuousTimeHistogramQueueOccupancy";
 	public String cthServerUtilization = "continuousTimeHistogramServerUtilization";
 	
 	public String dtcBatchWaitingTime 	  = "discreteTimeCounterBatchWaitingTime";
-	public String tempdtcBatchWaitingTime = "temporaryDiscreteTimeCounterBatchWaitingTime";
 	public String dtcBatchServiceTime 	  = "discreteTimeCounterBatchServiceTime";
+	
+	public String tempdtcBatchWaitingTime = "temporaryDiscreteTimeCounterBatchWaitingTime";
 	public String tempdtcBatchServiceTime = "temporaryDiscreteTimeCounterBatchServiceTime";
 	
 	public String ccreBatchWaitingTime = "confidenceCounterWithRelativeErrorBatchWaitingTime";
+	/**/
+	public String ccreBatchServiceTime = "confidenceCounterWithRelativeErrorBatchServiceTime";
+	
 	public String ccreWaitingTime 	   = "confidenceCounterWithRelativeErrorWaitingTime";
+	/**/
+	public String ccreServiceTime 	   = "confidenceCounterWithRelativeErrorServiceTime";
 
 	public String dtacBatchWaitingTime = "discreteTimeAutocorrelationCounterBatchWaitingTime";
+	/**/
+	public String dtacBatchServiceTime = "discreteTimeAutocorrelationCounterBatchServiceTime";
+
 
 	public long numWaitingTimeExceeds5TimesServiceTime;
 	public long numBatchWaitingTimeExceeds5TimesBatchServiceTime;
@@ -190,7 +202,6 @@ public class SimulationStudy {
 		 * TODO Problem 5.1.1 - Set simulation parameters
 		 * Hint: Take a look at the attributes of this class which have no usages yet (This may be indicated by your IDE)
 		 */
-
 		
 		// this.nInit = cNInit;
 		// this.cVar = ...
@@ -208,6 +219,8 @@ public class SimulationStudy {
 		 */
 		this.randVarInterArrivalTime = new Exponential(new StdRNG(1), simulator.realTimeToSimTime(0.95));
 		this.randVarServiceTime 	 = new Exponential(new StdRNG(2), simulator.realTimeToSimTime(1.0));
+//		this.randVarInterArrivalTime = new Exponential(new StdRNG(1), 0.95);
+//		this.randVarServiceTime 	 = new Exponential(new StdRNG(2), 1.0);
 		
 	}
 
