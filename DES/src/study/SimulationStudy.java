@@ -249,6 +249,8 @@ public class SimulationStudy {
 		statisticObjects.put(cthServerUtilization,
 				new ContinuousHistogram("server_utilization_over_time", 80, 0, 80, simulator));
 
+
+		
 		/*
 		 * TODO Problem 5.1.1 - Create a DiscreteConfidenceCounterWithRelativeError
 		 * In order to check later if the simulation can be terminated according to the condition
@@ -273,7 +275,7 @@ public class SimulationStudy {
 		/*
 		 * TODO Problem 5.1.4 - Create confidence counter for to count waiting times with batch means method
 		 */
-		 statisticObjects.put(ccreBatchWaitingTime,  new DiscreteConfidenceCounter("batch waiting-time"));
+		statisticObjects.put(dtcBatchServiceTime, new DiscreteCounter("batch waiting-time"));
 		 
 		/*
 		 * TODO Problem 5.1.5 - Create a DiscreteAutocorrelationCounter for batch means
