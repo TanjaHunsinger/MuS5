@@ -172,6 +172,7 @@ public class SimulationStudy {
 	public String dtacBatchServiceTime = "discreteTimeAutocorrelationCounterBatchServiceTime";
 	
 	public String dccWaitingTime = "discreteConfidenceCounterWaitingTime";
+	public String dccServiceTime = "discreteConfidenceCounterServiceTime";
 
 
 	public long numWaitingTimeExceeds5TimesServiceTime;
@@ -254,7 +255,6 @@ public class SimulationStudy {
 		 */
 		// 0.1 = alpha -> 90% Konfidenzintervall
 		statisticObjects.put(ccreBatchWaitingTime, new DiscreteConfidenceCounterWithRelativeError("terminate simulation", 0.1));
-//		statisticObjects.put(ccreBatchWaitingTime, new DiscreteConfidenceCounterWithRelativeError("terminate simulation"));
 		 
 		 /*
 		 * TODO Problem 5.1.4 - Create counter to calculate the mean waiting time with batch means method
@@ -265,7 +265,8 @@ public class SimulationStudy {
 		 * TODO Problem 5.1.4 - Provide means to keep track of E[WT] > 5 * E[ST]
 		 * !!! This is also called "waiting probability" in the sheet !!!
 		 */
-		 
+		statisticObjects.put(dccServiceTime, new DiscreteCounter("mean service-time"));
+		
 		/*
 		 * TODO Problem 5.1.4 - Create confidence counter for individual waiting time samples
 		 */

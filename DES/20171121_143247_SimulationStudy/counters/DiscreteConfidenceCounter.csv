@@ -1,3 +1,0 @@
-#counter ; numSamples ; MEAN; VAR; STD; CVAR; MIN; MAX;alpha;tz(1-alpha/2);lowerBound;upperBound
-individual waiting-time;0;0.0;0.0;0.0;0.0;Infinity;-Infinity;0.05;0.0;NaN;NaN
-batch waiting-time;3;0.22066666666666668;0.14608133333333334;0.38220587820353225;1.7320508075688772;0.0;0.662;0.05;4.303;-0.728862;1.1701953333333335

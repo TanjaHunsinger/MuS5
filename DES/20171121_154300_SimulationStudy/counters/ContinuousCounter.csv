@@ -1,3 +1,0 @@
-#counter ; numSamples ; MEAN; VAR; STD; CVAR; MIN; MAX
-server utilization/time;5;2.6752939530453715E-5;2.6752223810680195E-5;0.005172255195819343;193.33408913557338;0.0;1.0
-queue occupancy/time;2;0.0;0.0;0.0;0.0;0.0;0.0

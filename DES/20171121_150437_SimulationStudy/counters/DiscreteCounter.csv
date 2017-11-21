@@ -1,4 +1,0 @@
-#counter ; numSamples ; MEAN; VAR; STD; CVAR; MIN; MAX
-waiting time/customer;3;0.0;0.0;0.0;0.0;0.0;0.0
-service time/customer;3;2.0076666666666667;2.8836843333333335;1.698141435020456;0.8458283754045107;0.087;3.31
-mean waiting-time;0;0.0;0.0;0.0;0.0;Infinity;-Infinity
