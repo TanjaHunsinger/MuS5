@@ -206,20 +206,23 @@ public class Simulator implements IEventObserver{
             	// Abbruchbedingung: The simulation stops if - relative error of the 90% confidence interval for the estimated mean is lower than 5% 
             	// or if its absolute error is smaller than 0:0001 s.
             	
- //           	if(sims.)
-            	sims.statisticObjects.get(sims.dtacBatchWaitingTime).count(simTimeToRealTime(currentCustomer.getTimeInQueue()));
-            	sims.statisticObjects.get(sims.dtcBatchServiceTime).count(simTimeToRealTime(currentCustomer.getTimeInService()));
-            	
-
-                // update customer service end time
-                currentCustomer.serviceEndTime = getSimTime();
+            	if(true) {
 
 
-                sims.statisticObjects.get(sims.dtcWaitingTime).count(simTimeToRealTime(currentCustomer.getTimeInQueue()));
-                sims.statisticObjects.get(sims.dthWaitingTime).count(simTimeToRealTime(currentCustomer.getTimeInQueue()));
+            		sims.statisticObjects.get(sims.dtacBatchWaitingTime).count(simTimeToRealTime(currentCustomer.getTimeInQueue()));
+            		sims.statisticObjects.get(sims.dtcBatchServiceTime).count(simTimeToRealTime(currentCustomer.getTimeInService()));
 
-                sims.statisticObjects.get(sims.dtcServiceTime).count(simTimeToRealTime(currentCustomer.getTimeInService()));
-                sims.statisticObjects.get(sims.dthServiceTime).count(simTimeToRealTime(currentCustomer.getTimeInService()));
+
+            		// update customer service end time
+            		currentCustomer.serviceEndTime = getSimTime();
+
+
+            		sims.statisticObjects.get(sims.dtcWaitingTime).count(simTimeToRealTime(currentCustomer.getTimeInQueue()));
+            		sims.statisticObjects.get(sims.dthWaitingTime).count(simTimeToRealTime(currentCustomer.getTimeInQueue()));
+
+            		sims.statisticObjects.get(sims.dtcServiceTime).count(simTimeToRealTime(currentCustomer.getTimeInService()));
+            		sims.statisticObjects.get(sims.dthServiceTime).count(simTimeToRealTime(currentCustomer.getTimeInService()));
+            	}
 
             }
 

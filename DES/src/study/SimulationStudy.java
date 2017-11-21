@@ -38,8 +38,14 @@ public class SimulationStudy {
 	
 	// e.g. protected cNInit = ...
 	//protected cCvar = ... <- configuration Parameter for cVar[IAT] -> leider keine Ahnung, wofür die Werte sein sollen!
-	protected long cNinit;
-	protected double cCvar;
+	
+	// ACHTUNG: noch umändern!!
+	protected long cNinit = 20;
+	protected long cInterArrivalTime = 10;
+	protected long cServiceTime = 100;
+	protected long lBatch = 50;
+	protected double cCvar = 1.0;	// {0.5, 1, 2}
+	
 	
 	
 	/**
@@ -184,13 +190,15 @@ public class SimulationStudy {
 		 * TODO Problem 5.1.1 - Set simulation parameters
 		 * Hint: Take a look at the attributes of this class which have no usages yet (This may be indicated by your IDE)
 		 */
+
 		
-		
-	
 		// this.nInit = cNInit;
 		// this.cVar = ...
-		this.nInit = 10;
-		this.cVar  = 10;
+		this.nInit = cNinit;
+		this.cVar  = cCvar;
+		this.batchLength = lBatch;
+		this.interArrivalTime = simulator.realTimeToSimTime(cInterArrivalTime);
+		this.serviceTime 	  = simulator.realTimeToSimTime(cServiceTime);
 
 		/*
 		 * TODO Problem 5.1.2 - Create random variables for IAT and ST
@@ -238,13 +246,11 @@ public class SimulationStudy {
 		 * TODO Problem 5.1.4 - Create counter to calculate the mean waiting time with batch means method
 		 */
 		 
-		 
 		/*
 		 * TODO Problem 5.1.4 - Provide means to keep track of E[WT] > 5 * E[ST]
 		 * !!! This is also called "waiting probability" in the sheet !!!
 		 */
 		 
-		
 		 
 		/*
 		 * TODO Problem 5.1.4 - Create confidence counter for individual waiting time samples
