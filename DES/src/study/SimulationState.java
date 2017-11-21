@@ -65,12 +65,13 @@ public class SimulationState {
 		 * TODO Problem 5.1.1 - Implement this method
 		 * TransientPhase ist abgeschlossen, wenn nSamples >= nInit
 		 */
-		if(sims.nInit <= numSamples) {
+		if(sims.nInit > numSamples) {
 			return false;
 		}
 		else 
 			return true;
 	}
+	
 
 	/**
 	 * Increases number of samples

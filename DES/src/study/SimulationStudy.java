@@ -18,6 +18,7 @@ import simulation.lib.randVars.RandVar;
 import simulation.lib.randVars.continous.ErlangK;
 import simulation.lib.randVars.continous.Exponential;
 import simulation.lib.randVars.continous.HyperExponential;
+import simulation.lib.rng.RNG;
 import simulation.lib.rng.StdRNG;
 import simulation.lib.statistic.IStatisticObject;
 
@@ -40,11 +41,11 @@ public class SimulationStudy {
 	//protected cCvar = ... <- configuration Parameter for cVar[IAT] -> leider keine Ahnung, wofür die Werte sein sollen!
 	
 	// ACHTUNG: noch umändern!!
-	protected long cNinit = 20;
-	protected long cInterArrivalTime = 10;
-	protected long cServiceTime = 100;
-	protected long lBatch = 50;
+	protected long cNinit = 500;
+	protected long lBatch  = 100;
 	protected double cCvar = 1.0;	// {0.5, 1, 2}
+	protected long cInterArrivalTime = 10;
+	protected long cServiceTime 	 = 100;
 	
 	
 	
@@ -173,6 +174,8 @@ public class SimulationStudy {
 	public String dtacBatchWaitingTime = "discreteTimeAutocorrelationCounterBatchWaitingTime";
 	/**/
 	public String dtacBatchServiceTime = "discreteTimeAutocorrelationCounterBatchServiceTime";
+	
+	public String dccWaitingTime = "discreteConfidenceCounterWaitingTime";
 
 
 	public long numWaitingTimeExceeds5TimesServiceTime;
@@ -203,6 +206,7 @@ public class SimulationStudy {
 		 * Hint: Take a look at the attributes of this class which have no usages yet (This may be indicated by your IDE)
 		 */
 		
+		
 		// this.nInit = cNInit;
 		// this.cVar = ...
 		this.nInit = cNinit;
@@ -217,11 +221,16 @@ public class SimulationStudy {
 		 * You can use this.cVar as a configuration parameter for Cvar[IAT]
 		 * !!! Make sure to use StdRNG objects with different seeds !!!
 		 */
-		this.randVarInterArrivalTime = new Exponential(new StdRNG(1), simulator.realTimeToSimTime(0.95));
-		this.randVarServiceTime 	 = new Exponential(new StdRNG(2), simulator.realTimeToSimTime(1.0));
-//		this.randVarInterArrivalTime = new Exponential(new StdRNG(1), 0.95);
-//		this.randVarServiceTime 	 = new Exponential(new StdRNG(2), 1.0);
-		
+//		this.randVarInterArrivalTime = new Exponential(new StdRNG(1), simulator.realTimeToSimTime(0.95));
+//		this.randVarServiceTime 	 = new Exponential(new StdRNG(2), simulator.realTimeToSimTime(1.0));
+		randVarInterArrivalTime = new Exponential(new StdRNG(2), 1.0);
+		randVarServiceTime 	 = new Exponential(new StdRNG(1), 0.95);
+
+//		RNG seed = new StdRNG(1);
+//		randVarInterArrivalTime = new Exponential(seed, 1.0);
+//		seed = new StdRNG(100);
+//		randVarServiceTime = new Exponential(seed, 0.95);
+
 	}
 
 	/**
@@ -260,7 +269,7 @@ public class SimulationStudy {
 		 /*
 		 * TODO Problem 5.1.4 - Create counter to calculate the mean waiting time with batch means method
 		 */
-		statisticObjects.put(dtcWaitingTime, new DiscreteCounter("mean waiting-time"));
+		statisticObjects.put(dccWaitingTime, new DiscreteCounter("mean waiting-time"));
 		 
 		/*
 		 * TODO Problem 5.1.4 - Provide means to keep track of E[WT] > 5 * E[ST]
@@ -275,12 +284,12 @@ public class SimulationStudy {
 		/*
 		 * TODO Problem 5.1.4 - Create confidence counter for to count waiting times with batch means method
 		 */
-		statisticObjects.put(dtcBatchServiceTime, new DiscreteCounter("batch waiting-time"));
+		statisticObjects.put(dtcBatchServiceTime, new DiscreteConfidenceCounter("batch waiting-time"));
 		 
 		/*
 		 * TODO Problem 5.1.5 - Create a DiscreteAutocorrelationCounter for batch means
 		 */
-		statisticObjects.put(dtacBatchWaitingTime, new DiscreteAutocorrelationCounter("DiscreteAutocorrelationCounter", 10));
+		statisticObjects.put(dtacBatchWaitingTime, new DiscreteAutocorrelationCounter("DiscreteAutocorrelationCounter", 5));
 
 	}
 

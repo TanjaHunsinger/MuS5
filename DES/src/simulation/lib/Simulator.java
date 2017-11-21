@@ -3,6 +3,7 @@ package simulation.lib;
 import simulation.lib.counter.Counter;
 import simulation.lib.counter.DiscreteConfidenceCounter;
 import simulation.lib.counter.DiscreteConfidenceCounterWithRelativeError;
+import simulation.lib.counter.DiscreteCounter;
 import simulation.lib.event.CustomerArrivalEvent;
 import simulation.lib.event.Event;
 import simulation.lib.event.IEventObserver;
@@ -20,7 +21,7 @@ public class Simulator implements IEventObserver{
 	private SortableQueue ec;
 	private boolean stop;
 	
-	private int counter = 10;		// TEMP! SCHLEIFENABBRUCH
+	private int counter = 300;		// TEMP! SCHLEIFENABBRUCH
 	
 	private double arrMean[] = new double[1000];
 
@@ -196,7 +197,6 @@ public class Simulator implements IEventObserver{
 		sims.minQS = state.queueSize < sims.minQS ? state.queueSize : sims.minQS;
 		sims.maxQS = state.queueSize > sims.maxQS ? state.queueSize : sims.maxQS;
 
-		System.out.println("Counter: "+counter);
 
 		// update statistics if transient phase is over
 		if(this.state.isTransientPhaseOver()) {
@@ -210,38 +210,47 @@ public class Simulator implements IEventObserver{
 				 * - !!! Also check if the simulation can be terminated !!!
 				 */
 
-				System.out.println("TransientePhase() "+((DiscreteConfidenceCounterWithRelativeError) sims.statisticObjects.get(sims.ccreBatchWaitingTime)).maxAbsErr() );
-				// Abbruchbedingung: The simulation stops if - relative error of the 90% confidence interval for the estimated mean is lower than 5% 
-				// or if its absolute error is smaller than 0:0001 s.
-				if( (((DiscreteConfidenceCounterWithRelativeError) sims.statisticObjects.get(sims.ccreBatchWaitingTime)).maxAbsErr() < 0.0001) ||
-						(counter == 0) ) 
-				{
-					stop();
-					stopEventHandler(now);
-					}
-				
-				
+            	double error = ((DiscreteConfidenceCounterWithRelativeError)sims.statisticObjects.get(sims.ccreBatchWaitingTime)).maxAbsErr();
+				// Abbruchbedingung: The simulation stops if - relative error of the 90% confidence interval for the estimated mean is lower than 5% for if its absolute error is smaller than 0:0001 s.
+            	if(error < 0.01){
+            		stop();
+            		stopEventHandler(now);
+            	}
 				/**
 				 * Auswertung der bisher gezaehlten Werte fuer den vorangegangnen Batch
 				 *             	 */
-				if(((state.numSamples - sims.nInit) % (sims.batchLength)) == 0) {
+				if((state.numSamples - sims.nInit) % (sims.batchLength) == 0) {
 					/**
-					 * Mean waiting time berechnet und in Array hinterlegt
+					 * Mean waiting time berechnet und in Counter hinterlegt
 					 */ 
 					double mean = ((Counter) sims.statisticObjects.get(sims.dtacBatchWaitingTime)).getMean();
+					sims.statisticObjects.get(sims.ccreWaitingTime).count(mean);					
+					sims.statisticObjects.remove(sims.dtacBatchWaitingTime);
+					sims.statisticObjects.put(sims.dtacBatchWaitingTime, new DiscreteConfidenceCounter("individual waiting-time"));
+					
+					System.out.println("!!!!!!!!!!!mean " + mean);
+					System.out.println("!!!!!!!!!!mean ges "+ ((Counter)sims.statisticObjects.get(sims.ccreWaitingTime)).getMean());
+					System.out.println("numSamples " + state.numSamples + " nInit " + sims.nInit + " batchLength "+ sims.batchLength);
+	            	System.out.println("Absolute Error: "+error);
 					arrMean[counterArray] = mean;
 					counterArray++;
 
 					/**
 					 * 5.1.4.3 Einmaliges Zählen vom DiscreteCounterWithRelativeError zum berechnen der Konfidenzintervallgrenzen
 					 */ 
-					sims.statisticObjects.get(sims.ccreBatchWaitingTime).count(simTimeToRealTime(currentCustomer.getTimeInService()));
+//					sims.statisticObjects.get(sims.ccreWaitingTime).count(mean);
 
 					double lowerBound = ((DiscreteConfidenceCounterWithRelativeError) sims.statisticObjects.get(sims.ccreBatchWaitingTime)).getBound();
 					double upperBound = ((DiscreteConfidenceCounterWithRelativeError) sims.statisticObjects.get(sims.ccreBatchWaitingTime)).getUpperBound();
 
 
 				}// Batch- Grenze erreicht?
+				
+				sims.statisticObjects.get(sims.ccreBatchWaitingTime).count(simTimeToRealTime(currentCustomer.getTimeInQueue()));
+				sims.statisticObjects.get(sims.ccreWaitingTime).count(simTimeToRealTime(currentCustomer.getTimeInQueue()));
+				sims.statisticObjects.get(sims.dtcBatchServiceTime).count(simTimeToRealTime(currentCustomer.getTimeInQueue()));
+				sims.statisticObjects.get(sims.dtacBatchWaitingTime).count(simTimeToRealTime(currentCustomer.getTimeInQueue()));
+
 
 				// update customer service end time
 				currentCustomer.serviceEndTime = getSimTime();
@@ -251,12 +260,7 @@ public class Simulator implements IEventObserver{
 
 				sims.statisticObjects.get(sims.dtcServiceTime).count(simTimeToRealTime(currentCustomer.getTimeInService()));
 				sims.statisticObjects.get(sims.dthServiceTime).count(simTimeToRealTime(currentCustomer.getTimeInService()));
-
-				/**
-				 * Hinzugefuegt
-				 */
-				sims.statisticObjects.get(sims.dtacBatchWaitingTime).count(simTimeToRealTime(currentCustomer.getTimeInQueue()));	// DiscreteAutocorrelationCounter
-				sims.statisticObjects.get(sims.dtcBatchServiceTime).count(simTimeToRealTime(currentCustomer.getTimeInService()));
+				
 			}
 
 
@@ -271,7 +275,6 @@ public class Simulator implements IEventObserver{
 				sims.statisticObjects.get(sims.cthServerUtilization).count(0);
 			}
 		}
-		counter--;
 	}
 
 	/**
