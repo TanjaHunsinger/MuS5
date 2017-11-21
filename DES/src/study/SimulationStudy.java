@@ -37,16 +37,12 @@ public class SimulationStudy {
 	 */
 	
 	
-	// e.g. protected cNInit = ...
-	//protected cCvar = ... <- configuration Parameter for cVar[IAT] -> leider keine Ahnung, wofür die Werte sein sollen!
-	
-	// ACHTUNG: noch umändern!!
 	protected long cNinit = 500;
 	protected long lBatch  = 100;
 	protected double cCvar = 1.0;	// {0.5, 1, 2}
 	protected long cInterArrivalTime = 10;
 	protected long cServiceTime 	 = 100;
-	
+	protected double p = 0.05; // p Element [0.05; 0.95]
 	
 	
 	/**
@@ -221,16 +217,10 @@ public class SimulationStudy {
 		 * You can use this.cVar as a configuration parameter for Cvar[IAT]
 		 * !!! Make sure to use StdRNG objects with different seeds !!!
 		 */
-//		this.randVarInterArrivalTime = new Exponential(new StdRNG(1), simulator.realTimeToSimTime(0.95));
-//		this.randVarServiceTime 	 = new Exponential(new StdRNG(2), simulator.realTimeToSimTime(1.0));
-		randVarInterArrivalTime = new Exponential(new StdRNG(2), 1.0);
-		randVarServiceTime 	 = new Exponential(new StdRNG(1), 0.95);
-
-//		RNG seed = new StdRNG(1);
-//		randVarInterArrivalTime = new Exponential(seed, 1.0);
-//		seed = new StdRNG(100);
-//		randVarServiceTime = new Exponential(seed, 0.95);
-
+		double iat = (1.0/(p));
+	    randVarInterArrivalTime = new Exponential(new StdRNG(1), iat);
+		randVarServiceTime 	 = new Exponential(new StdRNG(100), 1.0);
+		
 	}
 
 	/**

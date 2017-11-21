@@ -21,10 +21,6 @@ public class Simulator implements IEventObserver{
 	private SortableQueue ec;
 	private boolean stop;
 	
-	private int counter = 300;		// TEMP! SCHLEIFENABBRUCH
-	
-	private double arrMean[] = new double[1000];
-
 	/**
 	 * Contains simulator statistics and parameters
 	 */
@@ -228,22 +224,11 @@ public class Simulator implements IEventObserver{
 					sims.statisticObjects.remove(sims.dtacBatchWaitingTime);
 					sims.statisticObjects.put(sims.dtacBatchWaitingTime, new DiscreteConfidenceCounter("individual waiting-time"));
 					
-					System.out.println("!!!!!!!!!!!mean " + mean);
-					System.out.println("!!!!!!!!!!mean ges "+ ((Counter)sims.statisticObjects.get(sims.ccreWaitingTime)).getMean());
-					System.out.println("numSamples " + state.numSamples + " nInit " + sims.nInit + " batchLength "+ sims.batchLength);
+//					System.out.println("!!!!!!!!!!!mean " + mean);
+//					System.out.println("!!!!!!!!!!mean ges "+ ((Counter)sims.statisticObjects.get(sims.ccreWaitingTime)).getMean());
+//					System.out.println("numSamples " + state.numSamples + " nInit " + sims.nInit + " batchLength "+ sims.batchLength);
 	            	System.out.println("Absolute Error: "+error);
-					arrMean[counterArray] = mean;
-					counterArray++;
-
-					/**
-					 * 5.1.4.3 Einmaliges Zählen vom DiscreteCounterWithRelativeError zum berechnen der Konfidenzintervallgrenzen
-					 */ 
-//					sims.statisticObjects.get(sims.ccreWaitingTime).count(mean);
-
-					double lowerBound = ((DiscreteConfidenceCounterWithRelativeError) sims.statisticObjects.get(sims.ccreBatchWaitingTime)).getBound();
-					double upperBound = ((DiscreteConfidenceCounterWithRelativeError) sims.statisticObjects.get(sims.ccreBatchWaitingTime)).getUpperBound();
-
-
+	            	
 				}// Batch- Grenze erreicht?
 				
 				sims.statisticObjects.get(sims.ccreBatchWaitingTime).count(simTimeToRealTime(currentCustomer.getTimeInQueue()));

@@ -1,0 +1,4 @@
+#counter ; numSamples ; MEAN; VAR; STD; CVAR; MIN; MAX;alpha;tz(1-alpha/2);lowerBound;upperBound
+individual waiting-time;3;0.0;0.0;0.0;0.0;0.0;0.0;0.05;4.303;0.0;0.0
+individual waiting-time;4;0.0;0.0;0.0;0.0;0.0;0.0;0.05;3.182;0.0;0.0
+batch waiting-time;3;0.0;0.0;0.0;0.0;0.0;0.0;0.05;4.303;0.0;0.0

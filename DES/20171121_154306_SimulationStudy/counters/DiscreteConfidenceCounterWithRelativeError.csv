@@ -1,0 +1,2 @@
+#counter ; numSamples ; MEAN; VAR; STD; CVAR; MIN; MAX;alpha;tz(1-alpha/2);lowerBound;upperBound;maxRelErr;maxAbsErr
+terminate simulation;3;0.0;0.0;0.0;0.0;0.0;0.0;0.05;3.182;0.0;;0.0;Infinity;0.0
